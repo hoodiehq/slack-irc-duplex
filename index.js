@@ -17,14 +17,14 @@ slack.on('message', function(message) {
   var text = message.text
 
   if (channel !== slackChannel) return
-  client.say(ircChannel, user + ': ' + text)
+  client.say(ircChannel, '<' + user + '> ' + text)
 })
 
 slack.login()
 
 client.addListener('message', function (user, channel, text) {
   if (channel !== ircChannel) return
-  slack.getChannelByName(slackChannel).send(user + ': ' + text)
+  slack.getChannelByName(slackChannel).send('*' + user + '* ' + text)
 })
 
 var server = http.createServer(function (req, res) {
