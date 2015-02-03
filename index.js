@@ -3,10 +3,11 @@ var ircChannel = process.env.IRC_CHANNEL
 
 var http = require('http')
 
-var Slack = require('slack-client')
-var slack = new Slack(process.env.SLACK_TOKEN , true, true)
-
+var emojis = require('emojis')
 var irc = require('irc')
+var Slack = require('slack-client')
+
+var slack = new Slack(process.env.SLACK_TOKEN , true, true)
 var client = new irc.Client('irc.freenode.net', 'slackbot', {
     channels: [ircChannel],
 })
@@ -34,6 +35,8 @@ slack.on('message', function(message) {
       ''
     )
   })
+
+  text = emojis.replaceWithUnicode(text)
 
   client.say(ircChannel, '<' + user + '> ' + text)
 })
