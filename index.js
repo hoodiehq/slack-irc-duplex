@@ -38,6 +38,11 @@ slack.on('message', function(message) {
 
   text = emojis.replaceWithUnicode(text)
 
+  var match;
+  while (match = text.match(/<([^\|]*)\|([^>]*)>/m)) {
+    text = text.replace('|'+match[2], '')
+  }
+
   client.say(ircChannel, '<' + user + '> ' + text)
 })
 
@@ -54,3 +59,4 @@ var server = http.createServer(function (req, res) {
 })
 
 server.listen(process.env.PORT || 8000);
+
