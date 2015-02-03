@@ -43,6 +43,8 @@ slack.on('message', function(message) {
     text = text.replace('|'+match[2], '')
   }
 
+  text = text.replace(':simple_smile:', ['☺︎', '☻'][Math.round(Math.random())])
+
   client.say(ircChannel, '<' + user + '> ' + text)
 })
 
