@@ -18,6 +18,8 @@ slack.on('message', function(message) {
   var user = slack.getUserByID(message.user).name
   var text = message.text
 
+  if (channel !== slackChannel) return
+
   var users = message._client.users
   Object.keys(users).forEach(function(user) {
     text = text.replace(new RegExp(
@@ -26,7 +28,6 @@ slack.on('message', function(message) {
     )
   })
 
-  if (channel !== slackChannel) return
   client.say(ircChannel, '<' + user + '> ' + text)
 })
 
