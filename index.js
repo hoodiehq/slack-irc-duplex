@@ -12,9 +12,19 @@ var client = new irc.Client('irc.freenode.net', 'slackbot', {
 })
 
 slack.on('message', function(message) {
+  if (!message.channel || !message.user) return
+
   var channel = slack.getChannelGroupOrDMByID(message.channel).name
   var user = slack.getUserByID(message.user).name
   var text = message.text
+
+  var users = message._client.users
+  Object.keys(users).forEach(function(user) {
+    text = text.replace(new RegExp(
+      '<@' + user + '>', 'gm'),
+      '@' + slack.getUserByID(user).name
+    )
+  })
 
   if (channel !== slackChannel) return
   client.say(ircChannel, '<' + user + '> ' + text)
