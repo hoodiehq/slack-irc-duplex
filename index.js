@@ -21,10 +21,17 @@ slack.on('message', function(message) {
   if (channel !== slackChannel) return
 
   var users = message._client.users
-  Object.keys(users).forEach(function(user) {
+  Object.keys(users).forEach(function(id) {
+    var name = slack.getUserByID(id).name
+
     text = text.replace(new RegExp(
-      '<@' + user + '>', 'gm'),
-      '@' + slack.getUserByID(user).name
+      '<@' + id + '>', 'gm'),
+      '@' + name
+    )
+
+    text = text.replace(new RegExp(
+      '<@' + id + '|' + name + '>', 'gm'),
+      ''
     )
   })
 
