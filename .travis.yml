@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- '0.10'
+sudo: false
+cache:
+  directories:
+  - node_modules
+notifications:
+  email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure: EPqr2CwWb+fhznMR3MSZhcS//b6IvX/ss7JLCeUHpel1+2+qQ0AH3oio1SSV9I/wJ09uxc6cFzDC7ZSCKoipEwJP/FSQPOhbAZV22mRe4d1hNC+wLHW0p+dqynpkmQ5EVYFYStUb8I3RnyE2rzjL0S0ycNDHx/pihM0xnapFwXU=
+  app: hoodie-slack-irc
+  on:
+    repo: hoodiehq/slack-irc-duplex
