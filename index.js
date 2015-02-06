@@ -55,6 +55,11 @@ client.addListener('message', function (user, channel, text) {
   slack.getChannelByName(slackChannel).send('*' + user + '* ' + text)
 })
 
+client.addListener('action', function (user, channel, text) {
+  if (channel !== ircChannel) return
+  slack.getChannelByName(slackChannel).send('*' + user + '* _' + text + '_')
+})
+
 var server = http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/plain'})
   res.end('beep boop\nSyncing Slack#' + slackChannel + ' to IRC' + ircChannel)
