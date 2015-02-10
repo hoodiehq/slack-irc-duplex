@@ -4,6 +4,7 @@ var ircChannel = process.env.IRC_CHANNEL
 var http = require('http')
 
 var emojis = require('emojis')
+var he = require('he')
 var irc = require('irc')
 var Slack = require('slack-client')
 
@@ -44,6 +45,8 @@ slack.on('message', function(message) {
   }
 
   text = text.replace(':simple_smile:', ['☺︎', '☻'][Math.round(Math.random())])
+
+  text = he.decode(text)
 
   client.say(ircChannel, '<' + user + '> ' + text)
 })
