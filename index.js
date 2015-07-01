@@ -8,12 +8,11 @@ var he = require('he')
 var irc = require('irc')
 var Slack = require('slack-client')
 
-var slack = new Slack(process.env.SLACK_TOKEN , true, true)
-var client = new irc.Client('irc.freenode.net', 'slackbot', {
-    channels: [ircChannel],
+var slack = new Slack(process.env.SLACK_TOKEN, true, true)
+var client = new irc.Client('irc.freenode.net', 'slackbot', {channels: [ircChannel]
 })
 
-slack.on('message', function(message) {
+slack.on('message', function (message) {
   if (!message.channel || !message.user) return
 
   var channel = slack.getChannelGroupOrDMByID(message.channel).name
@@ -23,7 +22,8 @@ slack.on('message', function(message) {
   if (channel !== slackChannel) return
 
   var users = message._client.users
-  Object.keys(users).forEach(function(id) {
+
+  Object.keys(users).forEach(function (id) {
     var name = slack.getUserByID(id).name
 
     text = text.replace(new RegExp(
@@ -39,10 +39,12 @@ slack.on('message', function(message) {
 
   text = emojis.replaceWithUnicode(text)
 
-  var match;
+  /* eslint-disable no-cond-assign */
+  var match
   while (match = text.match(/<([^\|]*)\|([^>]*)>/m)) {
-    text = text.replace('|'+match[2], '')
+    text = text.replace('|' + match[2], '')
   }
+  /* eslint-enable no-cond-assign */
 
   text = text.replace(':simple_smile:', ['☺︎', '☻'][Math.round(Math.random())])
 
@@ -68,5 +70,4 @@ var server = http.createServer(function (req, res) {
   res.end('beep boop\nSyncing Slack#' + slackChannel + ' to IRC' + ircChannel)
 })
 
-server.listen(process.env.PORT || 8000);
-
+server.listen(process.env.PORT || 8000)

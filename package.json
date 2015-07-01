@@ -14,6 +14,10 @@
     "slack-client": "^1.2.2"
   },
   "scripts": {
-    "start": "forever index.js"
+    "start": "forever index.js",
+		"test": "standard"
+  },
+  "devDependencies": {
+    "standard": "^4.5.1"
   }
 }
