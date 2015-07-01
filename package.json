@@ -10,12 +10,14 @@
     "emojis": "^1.0.7",
     "forever": "^0.13.0",
     "he": "^0.5.0",
+    "in-array": "^0.1.0",
     "irc": "^0.3.9",
-    "slack-client": "^1.2.2"
+    "lodash.invert": "^3.0.1",
+    "slack-client": "^1.4.1"
   },
   "scripts": {
     "start": "forever index.js",
-		"test": "standard"
+    "test": "standard"
   },
   "devDependencies": {
     "standard": "^4.5.1"
