@@ -74,9 +74,11 @@ client.addListener('action', function (user, channel, text) {
 // Small http server to tell the world what this bot is doing
 // handy to keep the heroku instance running
 
-var server = http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'})
-  res.end('beep boop\nSyncing Slack#' + slackChannel + ' to IRC' + ircChannel)
-})
+if (process.env.PORT) {
+  var server = http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/plain'})
+    res.end('beep boop\nSyncing Slack#' + slackChannel + ' to IRC' + ircChannel)
+  })
 
-server.listen(process.env.PORT || 8000)
+  server.listen(process.env.PORT)
+}
