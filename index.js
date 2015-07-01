@@ -8,9 +8,10 @@ var he = require('he')
 var irc = require('irc')
 var Slack = require('slack-client')
 
+var client = new irc.Client('irc.freenode.net', 'slackbot', {channels: [ircChannel]})
 var slack = new Slack(process.env.SLACK_TOKEN, true, true)
-var client = new irc.Client('irc.freenode.net', 'slackbot', {channels: [ircChannel]
-})
+
+// SLACK -> IRC
 
 slack.on('message', function (message) {
   if (!message.channel || !message.user) return
@@ -26,11 +27,13 @@ slack.on('message', function (message) {
   Object.keys(users).forEach(function (id) {
     var name = slack.getUserByID(id).name
 
+    // replace numeric user id with name
     text = text.replace(new RegExp(
       '<@' + id + '>', 'gm'),
       '@' + name
     )
 
+    // remove duplicate user id and name
     text = text.replace(new RegExp(
       '<@' + id + '|' + name + '>', 'gm'),
       ''
@@ -40,6 +43,7 @@ slack.on('message', function (message) {
   text = emojis.replaceWithUnicode(text)
 
   /* eslint-disable no-cond-assign */
+  // properly format links
   var match
   while (match = text.match(/<([^\|]*)\|([^>]*)>/m)) {
     text = text.replace('|' + match[2], '')
@@ -55,6 +59,8 @@ slack.on('message', function (message) {
 
 slack.login()
 
+// IRC -> SLACK
+
 client.addListener('message', function (user, channel, text) {
   if (channel !== ircChannel) return
   slack.getChannelByName(slackChannel).send('*' + user + '* ' + text)
@@ -64,6 +70,9 @@ client.addListener('action', function (user, channel, text) {
   if (channel !== ircChannel) return
   slack.getChannelByName(slackChannel).send('*' + user + '* _' + text + '_')
 })
+
+// Small http server to tell the world what this bot is doing
+// handy to keep the heroku instance running
 
 var server = http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/plain'})
